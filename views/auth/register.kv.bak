@@ -1,0 +1,150 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp 
+#:import MDDropDownItem kivymd.uix.dropdownitem.MDDropDownItem
+#:import MDDivider kivymd.uix.divider.MDDivider
+#:import MDFabButton kivymd.uix.button.MDFabButton
+#:import MDButton kivymd.uix.button.MDButton
+#:import MDButtonText kivymd.uix.button.MDButtonText
+#:import MDButtonIcon kivymd.uix.button.MDButtonIcon
+#:import MDListItemLeadingIcon kivymd.uix.list.MDListItemLeadingIcon
+#:import MDIcon kivymd.uix.label.MDIcon
+
+<RegisterScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: "16dp"
+        
+        MDBoxLayout:
+            size_hint_y: 0.1
+        
+        MDCard:
+            orientation: "vertical"
+            padding: "20dp"
+            spacing: "12dp"
+            elevation: 4
+            radius: [20, 20, 20, 20]
+            size_hint: .8, None
+            height: self.minimum_height
+            pos_hint: {"center_x": .5}
+            
+            MDLabel:
+                text: "Create Account"
+                halign: "center"
+                font_style: "Title"
+                role: "large"
+                theme_text_color: "Primary"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: 15
+            
+            MDDivider:
+                height: "1dp"
+            
+            # Username field with icon next to it
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: "280dp"
+                size_hint_y: None
+                height: "48dp"
+                pos_hint: {"center_x": .5}
+                spacing: "8dp"
+                
+                MDTextField:
+                    id: username
+                    hint_text: "Username/Email"
+                    helper_text_mode: "on_error"
+                    size_hint_x: 1
+                    font_size: "18sp"
+                
+                MDIcon:
+                    icon: "account"
+                    theme_text_color: "Secondary"
+                    pos_hint: {"center_y": .5}
+            
+            # Password field with icon next to it
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: "280dp"
+                size_hint_y: None
+                height: "48dp"
+                pos_hint: {"center_x": .5}
+                spacing: "8dp"
+                
+                MDTextField:
+                    id: password
+                    hint_text: "Password"
+                    helper_text_mode: "on_error"
+                    size_hint_x: 1
+                    font_size: "18sp"
+                    password: True
+                
+                MDIcon:
+                    icon: "lock"
+                    theme_text_color: "Secondary"
+                    pos_hint: {"center_y": .5}
+            
+            # Confirm Password field with icon next to it
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: "280dp"
+                size_hint_y: None
+                height: "48dp"
+                pos_hint: {"center_x": .5}
+                spacing: "8dp"
+                
+                MDTextField:
+                    id: confirm_password
+                    hint_text: "Confirm Password"
+                    helper_text_mode: "on_error"
+                    size_hint_x: 1
+                    font_size: "18sp"
+                    password: True
+                
+                MDIcon:
+                    icon: "lock-check"
+                    theme_text_color: "Secondary"
+                    pos_hint: {"center_y": .5}
+
+            MDDropDownItem:
+                id: access_level
+                pos_hint: {"center_x": .5}
+                text: "Select Access Level"
+                on_release: root.menu.open()
+                
+            MDButton:
+                style: "filled"
+                pos_hint: {"center_x": .5}
+                on_release: root.on_register_pressed()
+                MDButtonText:
+                    text: "CREATE ACCOUNT"
+            
+            MDDivider:
+                height: "1dp"
+            
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: "8dp"
+                size_hint_y: None
+                height: self.minimum_height
+                
+                MDLabel:
+                    text: "Already have an account?"
+                    font_size: "14sp"
+                    halign: "center"
+                    theme_text_color: "Secondary"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                
+                MDButton:
+                    style: "text"
+                    pos_hint: {"center_x": .5}
+                    on_release: root.goto_login()
+                    
+                    MDButtonText:
+                        text: "LOGIN"
+        
+        MDBoxLayout:
+            size_hint_y: 0.1

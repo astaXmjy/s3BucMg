@@ -1,0 +1,138 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+#:import MDFabButton kivymd.uix.button.MDFabButton
+#:import MDDivider kivymd.uix.divider.MDDivider
+#:import MDButton kivymd.uix.button.MDButton
+#:import MDButtonText kivymd.uix.button.MDButtonText
+#:import MDButtonIcon kivymd.uix.button.MDButtonIcon
+#:import MDListItemLeadingIcon kivymd.uix.list.MDListItemLeadingIcon
+#:import MDIcon kivymd.uix.label.MDIcon
+
+<LoginScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: "16dp"
+        
+        MDBoxLayout:
+            size_hint_y: 0.2
+        
+        MDCard:
+            orientation: "vertical"
+            padding: "20dp"
+            spacing: "12dp"
+            elevation: 4
+            radius: [20, 20, 20, 20]
+            size_hint: .8, None
+            height: self.minimum_height
+            pos_hint: {"center_x": .5}
+            
+            MDLabel:
+                text: "S3 File Manager"
+                halign: "center"
+                font_style: "Title"
+                role: "large"
+                theme_text_color: "Primary"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: 15
+            
+            MDDivider:
+                height: "1dp"
+            
+            # Username field with icon next to it
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: "280dp"
+                size_hint_y: None
+                height: "48dp"
+                pos_hint: {"center_x": .5}
+                spacing: "8dp"
+                
+                MDTextField:
+                    id: username
+                    hint_text: "Username"
+                    helper_text_mode: "on_error"
+                    size_hint_x: 1
+                    font_size: "18sp"
+                    write_tab: False
+                    multiline: False
+                
+                MDIcon:
+                    icon: "account"
+                    theme_text_color: "Secondary"
+                    pos_hint: {"center_y": .5}
+            
+            # Password field with icon next to it
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: "280dp"
+                size_hint_y: None
+                height: "48dp"
+                pos_hint: {"center_x": .5}
+                spacing: "8dp"
+                
+                MDTextField:
+                    id: password
+                    hint_text: "Password"
+                    helper_text_mode: "on_error"
+                    size_hint_x: 1
+                    font_size: "18sp"
+                    write_tab: False
+                    multiline: False
+                    password: True
+                
+                MDIcon:
+                    icon: "lock"
+                    theme_text_color: "Secondary"
+                    pos_hint: {"center_y": .5}
+            
+            MDButton:
+                style: "filled"
+                size_hint_x: None
+                width: "200dp"
+                height: "50dp"
+                pos_hint: {"center_x": .5}
+                on_release: root.validate_login()
+                
+                MDButtonText:
+                    text: "LOGIN"
+            
+            MDButton:
+                style: "text"
+                pos_hint: {"center_x": .5}
+                on_release: root.forgot_password()
+                
+                MDButtonText:
+                    text: "Forgot Password?"
+                    font_size: "14sp"
+            
+            MDDivider:
+                height: "1dp"
+            
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: "8dp"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: "8dp"
+                
+                MDLabel:
+                    text: "Don't have an account?"
+                    font_size: "14sp"
+                    halign: "center"
+                    theme_text_color: "Secondary"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                
+                MDButton:
+                    style: "text"
+                    pos_hint: {"center_x": .5}
+                    on_release: root.goto_register()
+                    
+                    MDButtonText:
+                        text: "CREATE ACCOUNT"
+        
+        MDBoxLayout:
+            size_hint_y: 0.2

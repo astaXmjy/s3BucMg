@@ -1,0 +1,260 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+
+<AdminDashboard>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        
+        # Top App Bar
+        MDTopAppBar:
+            title: "Admin Dashboard"
+            elevation: 4
+            left_action_items: [["menu", lambda x: root.toggle_nav_drawer()]]
+            right_action_items: [["refresh", lambda x: root.refresh_data()], ["logout", lambda x: root.logout()]]
+        
+        MDBoxLayout:
+            orientation: 'horizontal'
+            
+            # Navigation Drawer
+            MDNavigationDrawer:
+                id: nav_drawer
+                radius: [0, 16, 16, 0]
+                width: "240dp"
+                
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    padding: dp(16)
+                    spacing: dp(8)
+                    
+                    MDLabel:
+                        text: "Navigation"
+                        halign: "center"
+                        bold: True
+                        font_style: "H6"
+                        size_hint_y: None
+                        height: dp(40)
+                    
+                    MDDivider:
+                        height: "1dp"
+                    
+                    MDList:
+                        OneLineIconListItem:
+                            text: "Dashboard"
+                            on_release: 
+                                root.show_tab('dashboard')
+                                root.ids.nav_drawer.set_state("close")
+                            IconLeftWidget:
+                                icon: "view-dashboard"
+                        
+                        OneLineIconListItem:
+                            text: "Users"
+                            on_release: 
+                                root.show_tab('users')
+                                root.ids.nav_drawer.set_state("close")
+                            IconLeftWidget:
+                                icon: "account-group"
+                                
+                        OneLineIconListItem:
+                            text: "Storage"
+                            on_release: 
+                                root.show_tab('storage')
+                                root.ids.nav_drawer.set_state("close")
+                            IconLeftWidget:
+                                icon: "folder"
+                        
+                        OneLineIconListItem:
+                            text: "Logs"
+                            on_release: 
+                                root.show_tab('logs')
+                                root.ids.nav_drawer.set_state("close")
+                            IconLeftWidget:
+                                icon: "text-box-multiple"
+            
+            # Main Content Area
+            MDBoxLayout:
+                id: content_area
+                orientation: 'vertical'
+                padding: dp(16)
+                spacing: dp(16)
+                
+                # Dashboard Tab
+                MDBoxLayout:
+                    id: dashboard_tab
+                    orientation: 'vertical'
+                    spacing: dp(16)
+                    opacity: 1
+                    
+                    MDLabel:
+                        text: "Dashboard Overview"
+                        halign: "center"
+                        font_style: "H5"
+                        bold: True
+                        size_hint_y: None
+                        height: dp(40)
+                    
+                    MDGridLayout:
+                        cols: 2
+                        spacing: dp(16)
+                        padding: dp(8)
+                        
+                        # Storage Card
+                        MDCard:
+                            style: "elevated"
+                            padding: dp(16)
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                spacing: dp(8)
+                                
+                                MDLabel:
+                                    text: "Storage Usage"
+                                    theme_text_color: "Primary"
+                                    font_size: "18sp"
+                                    bold: True
+                                
+                                MDLabel:
+                                    id: storage_label
+                                    text: "0 GB / 50 GB"
+                                    theme_text_color: "Secondary"
+                                    font_size: "16sp"
+                                
+                                MDProgressBar:
+                                    id: storage_progress
+                                    value: 0
+                        
+                        # Users Card
+                        MDCard:
+                            style: "elevated"
+                            padding: dp(16)
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                spacing: dp(8)
+                                
+                                MDLabel:
+                                    text: "User Management"
+                                    theme_text_color: "Primary"
+                                    font_size: "18sp"
+                                    bold: True
+                                
+                                MDLabel:
+                                    id: user_count_label
+                                    text: "Total Users: 0"
+                                    theme_text_color: "Secondary"
+                                    font_size: "16sp"
+                                
+                                MDButton:
+                                    style: "filled"
+                                    text: "Manage Users"
+                                    on_release: root.show_tab('users')
+                    
+                    # Quick Actions Row
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(16)
+                        size_hint_y: None
+                        height: dp(50)
+                        
+                        MDButton:
+                            style: "filled"
+                            text: "Add User"
+                            icon: "account-plus"
+                            on_release: root.show_add_user_dialog()
+                        
+                        MDButton:
+                            style: "filled"
+                            text: "Create Folder"
+                            icon: "folder-plus"
+                            on_release: root.show_create_folder_dialog()
+                
+                # Users Tab
+                MDBoxLayout:
+                    id: users_tab
+                    orientation: 'vertical'
+                    spacing: dp(16)
+                    opacity: 0
+                    disabled: True
+                    
+                    MDLabel:
+                        text: "User Management"
+                        halign: "center"
+                        font_style: "H5"
+                        bold: True
+                        size_hint_y: None
+                        height: dp(40)
+                    
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(50)
+                        spacing: dp(16)
+                        
+                        MDButton:
+                            style: "filled"
+                            text: "Add User"
+                            icon: "account-plus"
+                            on_release: root.show_add_user_dialog()
+                    
+                    MDScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        
+                        MDList:
+                            id: users_list
+                
+                # Storage Tab
+                MDBoxLayout:
+                    id: storage_tab
+                    orientation: 'vertical'
+                    spacing: dp(16)
+                    opacity: 0
+                    disabled: True
+                    
+                    MDLabel:
+                        text: "Storage Management"
+                        halign: "center"
+                        font_style: "H5"
+                        bold: True
+                        size_hint_y: None
+                        height: dp(40)
+                    
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(50)
+                        spacing: dp(16)
+                        
+                        MDButton:
+                            style: "filled"
+                            text: "Create Folder"
+                            icon: "folder-plus"
+                            on_release: root.show_create_folder_dialog()
+                    
+                    MDScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        
+                        MDList:
+                            id: folders_list
+                
+                # Logs Tab
+                MDBoxLayout:
+                    id: logs_tab
+                    orientation: 'vertical'
+                    spacing: dp(16)
+                    opacity: 0
+                    disabled: True
+                    
+                    MDLabel:
+                        text: "System Logs"
+                        halign: "center"
+                        font_style: "H5"
+                        bold: True
+                        size_hint_y: None
+                        height: dp(40)
+                    
+                    MDScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        
+                        MDList:
+                            id: logs_list

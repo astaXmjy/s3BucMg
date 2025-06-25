@@ -1,0 +1,196 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+
+<PullFileManagerScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.9, 0.9, 0.9, 1  # Light gray background for entire screen
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: 0
+        spacing: 0
+        
+        # Top App Bar (simplified - no username or logout since they're in left panel)
+        MDTopAppBar:
+            title: "File Download Manager"
+            elevation: 4
+            right_action_items: [["refresh", lambda x: root.refresh_view()]]
+        
+        # Main Content Area
+        MDBoxLayout:
+            orientation: 'horizontal'
+            spacing: dp(10)
+            padding: dp(10)
+            
+            # Left Sidebar - Folders
+            MDCard:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                padding: dp(10)
+                spacing: dp(10)
+                md_bg_color: 0.95, 0.95, 0.95, 1
+                
+                # User info and logout in left panel
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: dp(80)
+                    padding: dp(8)
+                    spacing: dp(8)
+                    
+                    MDLabel:
+                        text: root.username_text
+                        font_style: "Body"
+                        role: "medium"
+                        halign: "center"
+                        size_hint_y: None
+                        height: dp(30)
+                    
+                    MDButton:
+                        style: "outlined"
+                        size_hint: None, None
+                        size: dp(120), dp(36)
+                        pos_hint: {"center_x": 0.5}
+                        on_release: root.logout()
+                        
+                        MDButtonIcon:
+                            icon: "logout"
+                            
+                        MDButtonText:
+                            text: "Logout"
+                
+                MDDivider:
+                    height: dp(1)
+                
+                MDLabel:
+                    text: "Available Folders"
+                    font_style: "Body"
+                    role: "medium"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(40)
+                
+                MDDivider:
+                    height: dp(1)
+                
+                MDScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    
+                    MDList:
+                        id: folder_list
+            
+            # Right Content Area
+            MDCard:
+                orientation: 'vertical'
+                size_hint_x: 0.75
+                padding: dp(10)
+                spacing: dp(10)
+                md_bg_color: 0.95, 0.95, 0.95, 1
+                
+                # Current Path and Parent Button
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(50)
+                    spacing: dp(10)
+                    padding: [dp(10), 0]
+                    
+                    MDLabel:
+                        id: current_path_label
+                        text: "Current Path: /"
+                        size_hint_x: 0.7
+                        valign: "center"
+                    
+                    MDButton:
+                        style: "outlined"
+                        on_release: root.navigate_to_parent()
+                        size_hint: None, None
+                        size: dp(120), dp(40)
+                        pos_hint: {"center_y": 0.5}
+                        
+                        MDButtonIcon:
+                            icon: "arrow-up"
+                            
+                        MDButtonText:
+                            text: "Parent"
+                
+                # File List Header
+                MDLabel:
+                    text: "Files in Current Folder"
+                    font_style: "Body"
+                    role: "medium"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(40)
+
+                # File List
+                MDCard:
+                    md_bg_color: 1, 1, 1, 1  # White background for file list
+                    size_hint_y: 0.8
+                    
+                    MDScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        
+                        MDList:
+                            id: file_list
+                
+                # Download Action Buttons at Bottom
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(60)
+                    padding: [dp(10), dp(10)]
+                    spacing: dp(10)
+                    
+                    MDButton:
+                        style: "outlined"
+                        on_release: root.select_all()
+                        size_hint: None, None
+                        size: dp(140), dp(48)
+                        pos_hint: {"center_y": 0.5}
+                        
+                        MDButtonIcon:
+                            icon: "select-all"
+                            
+                        MDButtonText:
+                            text: "Select All"
+                    
+                    Widget:
+                        size_hint_x: 0.3
+                        
+                    MDButton:
+                        style: "filled"
+                        on_release: root.download_selected()
+                        size_hint: None, None
+                        size: dp(180), dp(48)
+                        pos_hint: {"center_y": 0.5}
+                        md_bg_color: 0.2, 0.4, 0.8, 1  # Blue color
+                        
+                        MDButtonIcon:
+                            icon: "download"
+                            pos_hint: {"center_y": 0.5}
+                            
+                        MDButtonText:
+                            text: "Download Selected"
+                    
+                    Widget:
+                        size_hint_x: 0.3
+        
+        # Bottom section for progress display
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(40) if progress_bar.opacity > 0 else dp(8)
+            padding: dp(10)
+            
+            MDLinearProgressIndicator:
+                id: progress_bar
+                size_hint_y: None
+                height: dp(4)
+                value: 0
+                opacity: 0

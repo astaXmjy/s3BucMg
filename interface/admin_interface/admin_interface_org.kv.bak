@@ -1,0 +1,208 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+#:import AppTheme views.common.styles.AppTheme
+#:include views/common/styles.kv
+
+<AdminDashboard>:
+   MDScreen:
+       MDBoxLayout:
+           orientation: 'vertical'
+           spacing: dp(10)
+           
+           MDTopAppBar:
+               title: "Admin Dashboard"
+               elevation: 4
+               left_action_items: [["menu", lambda x: root.toggle_nav_drawer()]]
+               right_action_items: [["refresh", lambda x: root.refresh_data()], ["account", lambda x: root.show_account_menu()], ["logout", lambda x: root.logout()]]
+           
+           MDBoxLayout:
+               orientation: 'horizontal'
+               
+               MDNavigationDrawer:
+                   id: nav_drawer
+                   radius: [0, 16, 16, 0]
+                   width: "240dp"
+                   
+                   MDList:
+                       OneLineIconListItem:
+                           text: "Dashboard"
+                           on_release: 
+                               root.manager.current = 'dashboard'
+                               root.ids.nav_drawer.set_state("close")
+                           IconLeftWidget:
+                               icon: "view-dashboard"
+                       
+                       OneLineIconListItem:
+                           text: "Users"
+                           on_release: 
+                               root.manager.current = 'user_management'
+                               root.ids.nav_drawer.set_state("close")
+                           IconLeftWidget:
+                               icon: "account-group"
+                               
+                       OneLineIconListItem:
+                           text: "Storage"
+                           on_release: 
+                               root.manager.current = 'storage'
+                               root.ids.nav_drawer.set_state("close")
+                           IconLeftWidget:
+                               icon: "folder"
+               
+               MDBoxLayout:
+                   orientation: 'vertical'
+                   padding: dp(16)
+                   spacing: dp(16)
+                   
+                   MDGridLayout:
+                       cols: 3
+                       spacing: dp(16)
+                       size_hint_y: None
+                       height: dp(120)
+                       
+                       # Storage Card
+                       MDCard:
+                           style: "elevated"
+                           padding: dp(16)
+                           MDBoxLayout:
+                               orientation: 'vertical'
+                               spacing: dp(8)
+                               
+                               MDLabel:
+                                   text: "Storage Usage"
+                                   theme_text_color: "Primary"
+                                   font_size: "18sp"
+                                   bold: True
+                               
+                               MDLabel:
+                                   id: storage_label
+                                   text: "0 GB / 0 GB"
+                                   theme_text_color: "Secondary"
+                                   font_size: "16sp"
+                               
+                               MDProgressBar:
+                                   id: storage_progress
+                                   value: 0
+                                   color: app.theme_cls.primary_color
+                       
+                       # Users Card
+                       MDCard:
+                           style: "elevated"
+                           padding: dp(16)
+                           MDBoxLayout:
+                               orientation: 'vertical'
+                               spacing: dp(8)
+                               
+                               MDLabel:
+                                   text: "Active Users"
+                                   theme_text_color: "Primary"
+                                   font_size: "18sp"
+                                   bold: True
+                               
+                               
+                       
+                       # Operations Card
+                       MDCard:
+                           style: "elevated"
+                           padding: dp(16)
+                           MDBoxLayout:
+                               orientation: 'vertical'
+                               spacing: dp(8)
+                               
+                               MDLabel:
+                                   text: "Daily Operations"
+                                   theme_text_color: "Primary"
+                                   font_size: "18sp"
+                                   bold: True
+                               
+                               MDLabel:
+                                   id: operations_label
+                                   text: "0"
+                                   theme_text_color: "Secondary"
+                                   font_size: "24sp"
+                                   halign: "center"
+                                   bold: True
+                   
+                   MDGridLayout:
+                       cols: 2
+                       spacing: dp(16)
+                       
+                       # Recent Activity Card
+                       MDCard:
+                           style: "elevated"
+                           MDBoxLayout:
+                               orientation: 'vertical'
+                               padding: dp(16)
+                               spacing: dp(8)
+                               
+                               MDLabel:
+                                   text: "Recent Activity"
+                                   theme_text_color: "Primary"
+                                   font_size: "20sp"
+                                   bold: True
+                                   size_hint_y: None
+                                   height: dp(30)
+                               
+                               MDDivider:
+                                   height: dp(1)
+                               
+                       
+                       # Quick Actions Card
+                       MDCard:
+                           style: "elevated"
+                           MDBoxLayout:
+                               orientation: 'vertical'
+                               padding: dp(16)
+                               spacing: dp(8)
+                               
+                               MDLabel:
+                                   text: "Quick Actions"
+                                   theme_text_color: "Primary"
+                                   font_size: "20sp"
+                                   bold: True
+                                   size_hint_y: None
+                                   height: dp(30)
+                               
+                               MDDivider:
+                                   height: dp(1)
+                               
+                               MDGridLayout:
+                                   cols: 2
+                                   spacing: dp(8)
+                                   padding: [0, dp(8), 0, 0]
+                                   adaptive_height: True
+                                   
+                                   MDButton:
+                                       style: "filled"
+                                       size_hint_x: 1
+                                       on_release: root.show_add_user_dialog()
+                                       MDButtonText:
+                                           text: "Add User"
+                                       MDButtonIcon:
+                                           icon: "account-plus"
+                                   
+                                   MDButton:
+                                       style: "filled"
+                                       size_hint_x: 1
+                                       on_release: root.show_storage_management()
+                                       MDButtonText:
+                                           text: "Manage Storage"
+                                       MDButtonIcon:
+                                           icon: "folder-cog"
+                                   
+                                   MDButton:
+                                       style: "filled"
+                                       size_hint_x: 1
+                                       on_release: root.show_logs()
+                                       MDButtonText:
+                                           text: "View Logs"
+                                       MDButtonIcon:
+                                           icon: "history"
+                                   
+                                   MDButton:
+                                       style: "filled"
+                                       size_hint_x: 1
+                                       on_release: root.show_settings()
+                                       MDButtonText:
+                                           text: "Settings" 
+                                       MDButtonIcon:
+                                           icon: "cog"

@@ -1,0 +1,139 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+
+<LoginScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.97, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: "16dp"
+        
+        MDBoxLayout:
+            size_hint_y: 0.2
+            
+            Image:
+                source: "assets/logo.png"  # Replace with your logo
+                size_hint: None, None
+                size: dp(100), dp(100)
+                pos_hint: {"center_x": .5, "center_y": .5}
+        
+        MDCard:
+            orientation: "vertical"
+            padding: "24dp"
+            spacing: "16dp"
+            elevation: 3
+            radius: [16, 16, 16, 16]
+            size_hint: .85, None
+            height: self.minimum_height
+            pos_hint: {"center_x": .5}
+            md_bg_color: 1, 1, 1, 1
+            
+            MDLabel:
+                text: "Welcome Back"
+                halign: "center"
+                font_style: "Body"
+                role: "medium"
+                bold: True
+                theme_text_color: "Primary"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(20)
+            
+            MDLabel:
+                text: "Sign in to continue"
+                halign: "center"
+                font_style: "Body"
+                theme_text_color: "Secondary"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(10)
+            
+            MDTextField:
+                id: username
+                mode: "outlined"
+                hint_text: "Username"
+                icon_right: "account"
+                font_size: "18sp"
+                size_hint_y: None
+                height: dp(56)
+                pos_hint: {"center_x": .5}
+                
+            MDTextField:
+                id: password
+                mode: "outlined"
+                hint_text: "Password"
+                icon_right: "lock"
+                font_size: "18sp"
+                size_hint_y: None
+                height: dp(56)
+                pos_hint: {"center_x": .5}
+                password: True
+            
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(30)
+                spacing: dp(8)
+                
+                MDCheckbox:
+                    id: remember_me
+                    size_hint: None, None
+                    size: dp(30), dp(30)
+                    pos_hint: {"center_y": .5}
+                
+                MDLabel:
+                    text: "Remember me"
+                    font_size: "14sp"
+                    theme_text_color: "Secondary"
+                    pos_hint: {"center_y": .5}
+                
+                Widget:
+                    size_hint_x: 0.5
+                
+                # Forgot Password button removed for future implementation
+                    
+            
+            MDButton:
+                style: "filled"
+                size_hint_x: 1
+                height: dp(56)
+                pos_hint: {"center_x": .5}
+                on_release: root.validate_login()
+                elevation: 1
+                md_bg_color: app.theme_cls.primaryColor
+                
+                MDButtonText:
+                    text: "SIGN IN"
+                    font_size: "18sp"
+            
+            MDBoxLayout:
+                orientation: 'horizontal'
+                spacing: "8dp"
+                size_hint_y: None
+                height: dp(50)
+                pos_hint: {"center_x": .5}
+                
+                MDLabel:
+                    text: "Don't have an account?"
+                    font_size: "14sp"
+                    theme_text_color: "Secondary"
+                    halign: "right"
+                    pos_hint: {"center_y": .5}
+                
+                MDButton:
+                    style: "text"
+                    theme_text_color: "Primary"
+                    bold: True
+                    pos_hint: {"center_y": .5}
+                    on_release: root.goto_register()
+                    MDButtonText:
+                        text: "Sign Up"
+                        font_size: "14sp"
+        
+        MDBoxLayout:
+            size_hint_y: 0.2

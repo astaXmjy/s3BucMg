@@ -1,0 +1,49 @@
+│   ├── .env
+│   ├── file_tree.py
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── auth/
+│   │   │   ├── __init__.py
+│   │   │   ├── permission_manager.py
+│   │   │   ├── user_manager.py
+│   │   ├── aws/
+│   │   │   ├── config.py
+│   │   │   ├── dynamo_init.py
+│   │   │   ├── dynamo_manager.py
+│   │   │   ├── s3_helper.py
+│   │   │   ├── schema.py
+│   │   ├── utils/
+│   │   │   ├── audit_logger.py
+│   │   │   ├── cache_manager.py
+│   │   │   ├── database_manager.py
+│   ├── interface/
+│   │   ├── __init__.py
+│   │   ├── admin_interface/
+│   │   │   ├── __init__.py
+│   │   │   ├── admin_interface.kv
+│   │   │   ├── admin_interface.py
+│   │   ├── pull_interface/
+│   │   │   ├── __init__.py
+│   │   │   ├── pull_interface.kv
+│   │   │   ├── pull_interface.py
+│   │   ├── push_interface/
+│   │   │   ├── __init__.py
+│   │   │   ├── push_file_manager.kv
+│   │   │   ├── push_file_manager.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── permission.py
+│   │   ├── user_model.py
+│   ├── views/
+│   │   ├── __init__.py
+│   │   ├── auth/
+│   │   │   ├── __init__.py
+│   │   │   ├── login.kv
+│   │   │   ├── login.py
+│   │   │   ├── register.kv
+│   │   │   ├── register.py
+│   │   ├── common/
+│   │   │   ├── __init__.py
+│   │   │   ├── styles.kv

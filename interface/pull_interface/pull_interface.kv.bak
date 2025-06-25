@@ -1,0 +1,122 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+
+<PullFileManagerScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+        
+        # Top App Bar
+        MDTopAppBar:
+            title: "File Download Manager"
+            elevation: 4
+            right_action_items: [["refresh", lambda x: root.refresh_view()], ["logout", lambda x: root.logout()]]
+        
+        # Main Content Area
+        MDBoxLayout:
+            orientation: 'horizontal'
+            spacing: dp(10)
+            
+            # Left Sidebar - Folders
+            MDCard:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                padding: dp(10)
+                spacing: dp(10)
+                
+                MDLabel:
+                    text: "Available Folders"
+                    font_style: "Body"
+                    role: "medium"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(40)
+                
+                MDDivider:
+                    height: dp(1)
+                
+                MDScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    
+                    MDList:
+                        id: folder_list
+            
+            # Right Content Area
+            MDCard:
+                orientation: 'vertical'
+                size_hint_x: 0.75
+                padding: dp(10)
+                spacing: dp(10)
+                
+                # Current Path and Search
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(50)
+                    spacing: dp(10)
+                    
+                    MDLabel:
+                        id: current_path_label
+                        text: "Current Path: /"
+                        size_hint_x: 0.7
+                        valign: "center"
+                    
+                    MDButton:
+                        text: "Parent"
+                        icon: "arrow-up"
+                        style: "outlined"
+                        on_release: root.navigate_to_parent()
+                
+                # File List
+                MDLabel:
+                    text: "Files in Current Folder"
+                    font_style: "Body"
+                    role: "medium"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(40)
+                
+                MDScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    
+                    MDList:
+                        id: file_list
+                
+                # Action Buttons
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(50)
+                    spacing: dp(10)
+                    padding: [dp(10), 0]
+                    
+                    MDButton:
+                        text: "Download Selected"
+                        icon: "download"
+                        style: "filled"
+                        on_release: root.download_selected()
+                    
+                    MDButton:
+                        text: "Select All"
+                        icon: "select-all"
+                        style: "outlined"
+                        on_release: root.select_all()
+                    
+                    Widget:
+                        size_hint_x: 0.5
+        
+        # Download Progress
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(40) if progress_bar.opacity > 0 else 0
+            
+            MDProgressBar:
+                id: progress_bar
+                size_hint_y: None
+                height: dp(4)
+                value: 0
+                opacity: 0

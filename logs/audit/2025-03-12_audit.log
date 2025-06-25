@@ -1,0 +1,2 @@
+{"id": "1f7c3d00-8055-47c4-b18f-d704f8f717a0", "timestamp": "2025-03-12T23:50:04.330993", "action": "login_success", "user_id": "admin@admin.com", "resource": null, "details": {"session_id": "3dd2b37c-86b0-490b-8825-c6cae052d999"}, "severity": "info", "ip_address": "Unknown", "success": true}
+{"id": "e2e79461-880e-4763-a16e-126322569e3a", "timestamp": "2025-03-12T23:50:04.335360", "action": "login_success", "user_id": null, "resource": {"username": "admin@admin.com"}, "details": {}, "severity": "info", "ip_address": "Unknown", "success": true}

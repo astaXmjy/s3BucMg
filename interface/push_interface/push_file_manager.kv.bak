@@ -1,0 +1,120 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+#:import MDProgressIndicator kivymd.uix.progressindicator.MDLinearProgressIndicator
+
+<PushFileManagerScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+        
+        # Top App Bar
+        MDTopAppBar:
+            title: "File Manager"
+            elevation: 4
+            right_action_items: [["refresh", lambda x: root.refresh_view()], ["dots-vertical", lambda x: root.show_context_menu()]]
+        
+        # Main Content Area
+        MDBoxLayout:
+            orientation: 'horizontal'
+            spacing: dp(10)
+            
+            # Left Sidebar - Folders
+            MDCard:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                padding: dp(10)
+                spacing: dp(10)
+                
+                MDLabel:
+                    text: "Folders"
+                    font_style: "Title"
+                    role: "medium"
+                    halign: "center"
+                
+                MDDivider:
+                    height: dp(1)
+                
+                MDScrollView:
+                    MDList:
+                        id: folder_list
+                
+                MDButton:
+                    style: "elevated"
+                    pos_hint: {"center_x": 0.5}
+                    on_release: root.show_new_folder_dialog()
+                    
+                    MDButtonIcon:
+                        icon: "folder-plus"
+                    
+                    MDButtonText:
+                        text: "New Folder"
+            
+            # Right Content Area
+            MDCard:
+                orientation: 'vertical'
+                size_hint_x: 0.75
+                padding: dp(10)
+                spacing: dp(10)
+                
+                # Current Path and Search
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(50)
+                    spacing: dp(10)
+                    
+                    MDTextField:
+                        id: search_field
+                        hint_text: "Search files..."
+                        size_hint_x: 0.7
+                        on_text: root.filter_files(self.text)
+                    
+                    MDIconButton:
+                        icon: "magnify"
+                        style: "standard"
+                        on_release: root.perform_search()
+                
+                # File List
+                MDScrollView:
+                    MDList:
+                        id: file_list
+                
+                # Action Buttons
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(50)
+                    spacing: dp(10)
+                    padding: [dp(10), 0]
+                    
+                    MDButton:
+                        style: "filled"
+                        on_release: root.show_upload_dialog()
+                        
+                        MDButtonIcon:
+                            icon: "upload"
+                        
+                        MDButtonText:
+                            text: "Upload"
+                    
+                    MDButton:
+                        style: "outlined"
+                        on_release: root.delete_selected()
+                        
+                        MDButtonIcon:
+                            icon: "delete"
+                            theme_icon_color: "Error"
+                        
+                        MDButtonText:
+                            text: "Delete"
+                            theme_text_color: "Error"
+        
+        # Upload Progress
+        MDLinearProgressIndicator:
+            id: upload_progress
+            size_hint_y: None
+            height: dp(4)
+            value: 0
+            max: 100
+            opacity: 0

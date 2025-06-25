@@ -1,0 +1,229 @@
+#:kivy 2.0.0
+#:import dp kivy.metrics.dp
+
+<RegisterScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.97, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: "16dp"
+        
+        MDBoxLayout:
+            size_hint_y: 0.15
+            
+            Image:
+                source: "assets/logo.png"  # Replace with your logo
+                size_hint: None, None
+                size: dp(100), dp(100)
+                pos_hint: {"center_x": .5, "center_y": .5}
+        
+        MDCard:
+            orientation: "vertical"
+            padding: "24dp"
+            spacing: "16dp"
+            elevation: 3
+            radius: [16, 16, 16, 16]
+            size_hint: .85, None
+            height: self.minimum_height
+            pos_hint: {"center_x": .5}
+            md_bg_color: 1, 1, 1, 1
+            
+            MDLabel:
+                text: "Create Account"
+                halign: "center"
+                font_style: "Body"
+                role: "medium"
+                bold: True
+                theme_text_color: "Primary"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(10)
+            
+            MDLabel:
+                text: "Sign up to get started"
+                halign: "center"
+                font_style: "Body"
+                theme_text_color: "Secondary"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(5)
+            
+            # Username field with label above
+            MDLabel:
+                text: "Username or Email Address"
+                font_style: "Body"
+                theme_text_color: "Primary"
+                font_size: "14sp"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(5)
+                
+            MDTextField:
+                id: username
+                mode: "outlined"
+                hint_text: "Enter your username or email"
+                icon_right: "account"
+                font_size: "16sp"
+                size_hint_y: None
+                height: dp(56)
+                pos_hint: {"center_x": .5}
+            
+            # Password field with label above
+            MDLabel:
+                text: "Password (minimum 6 characters)"
+                font_style: "Body"
+                theme_text_color: "Primary"
+                font_size: "14sp"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(5)
+                
+            MDTextField:
+                id: password
+                mode: "outlined"
+                hint_text: "Enter your password"
+                icon_right: "lock"
+                font_size: "16sp"
+                size_hint_y: None
+                height: dp(56)
+                pos_hint: {"center_x": .5}
+                password: True
+            
+            # Confirm Password field with label above
+            MDLabel:
+                text: "Confirm Password"
+                font_style: "Body"
+                theme_text_color: "Primary"
+                font_size: "14sp"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(5)
+                
+            MDTextField:
+                id: confirm_password
+                mode: "outlined"
+                hint_text: "Re-enter your password"
+                icon_right: "lock-check"
+                font_size: "16sp"
+                size_hint_y: None
+                height: dp(56)
+                pos_hint: {"center_x": .5}
+                password: True
+            
+            # Access Type section with clear labels
+            MDLabel:
+                text: "Account Access Type"
+                font_style: "Body"
+                bold: True
+                theme_text_color: "Primary"
+                font_size: "16sp"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(10)
+                
+            # Use simple MDBoxLayout with explicit buttons for access type
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: dp(12)
+                size_hint_y: None
+                height: dp(60)
+                padding: [0, dp(10), 0, 0]
+                
+                # Pull Button with explicit label
+                MDButton:
+                    style: "outlined" if root.selected_access_level != "pull" else "filled"
+                    size_hint_x: 1
+                    md_bg_color: [0.2, 0.6, 0.9, 1] if root.selected_access_level == "pull" else [1, 1, 1, 1]
+                    on_release: root.set_access_level("pull")
+                    
+                    MDButtonText:
+                        text: "PULL ACCESS"
+                        theme_text_color: "Custom"
+                        text_color: [1, 1, 1, 1] if root.selected_access_level == "pull" else [0, 0, 0, 0.8]
+                        bold: True
+                
+                # Push Button with explicit label
+                MDButton:
+                    style: "outlined" if root.selected_access_level != "push" else "filled"
+                    size_hint_x: 1
+                    md_bg_color: [0.2, 0.6, 0.9, 1] if root.selected_access_level == "push" else [1, 1, 1, 1]
+                    on_release: root.set_access_level("push")
+                    
+                    MDButtonText:
+                        text: "PUSH ACCESS"
+                        theme_text_color: "Custom"
+                        text_color: [1, 1, 1, 1] if root.selected_access_level == "push" else [0, 0, 0, 0.8]
+                        bold: True
+                
+                # Both Button with explicit label  
+                MDButton:
+                    style: "outlined" if root.selected_access_level != "both" else "filled"
+                    size_hint_x: 1
+                    md_bg_color: [0.2, 0.6, 0.9, 1] if root.selected_access_level == "both" else [1, 1, 1, 1]
+                    on_release: root.set_access_level("both")
+                    
+                    MDButtonText:
+                        text: "FULL ACCESS"
+                        theme_text_color: "Custom"
+                        text_color: [1, 1, 1, 1] if root.selected_access_level == "both" else [0, 0, 0, 0.8]
+                        bold: True
+            
+            # Description of selected access type with better visibility
+            MDLabel:
+                id: access_description
+                text: "Pull Access lets you download files only" if root.selected_access_level == "pull" else "Push Access lets you upload files only" if root.selected_access_level == "push" else "Full Access lets you both upload and download files"
+                font_size: "14sp"
+                theme_text_color: "Secondary"
+                size_hint_y: None
+                height: dp(40)  # Fixed height to ensure visibility
+                halign: "center"
+                valign: "middle"
+                padding_y: dp(10)
+            
+            MDBoxLayout:
+                size_hint_y: None
+                height: dp(20)
+            
+            MDButton:
+                style: "filled"
+                size_hint_x: 1
+                height: dp(56)
+                pos_hint: {"center_x": .5}
+                on_release: root.on_register_pressed()
+                elevation: 1
+                md_bg_color: app.theme_cls.primaryColor
+                
+                MDButtonText:
+                    text: "CREATE ACCOUNT"
+                    font_size: "16sp"
+            
+            MDBoxLayout:
+                orientation: 'horizontal'
+                spacing: "8dp"
+                size_hint_y: None
+                height: dp(50)
+                pos_hint: {"center_x": .5}
+                
+                MDLabel:
+                    text: "Already have an account?"
+                    font_size: "14sp"
+                    theme_text_color: "Secondary"
+                    halign: "right"
+                    pos_hint: {"center_y": .5}
+                
+                MDButton:
+                    theme_text_color: "Primary"
+                    bold: True
+                    pos_hint: {"center_y": .5}
+                    on_release: root.goto_login()
+                    MDButtonText:   
+                        text: "Sign In"
+                        font_size: "14sp"
+        
+        MDBoxLayout:
+            size_hint_y: 0.15

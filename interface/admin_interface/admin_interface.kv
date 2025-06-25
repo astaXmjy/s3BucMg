@@ -1,0 +1,471 @@
+#:kivy 2.2.1
+
+<AdminDashboard>:
+    # For backwards compatibility
+    dashboard_tab: dashboard_screen
+    users_tab: users_screen
+    storage_tab: storage_screen
+    logs_tab: logs_screen
+    
+    MDScreen:
+        MDBoxLayout:
+            orientation: 'horizontal'
+            
+            # Left Navigation Panel
+            MDCard:
+                size_hint_x: 0.25
+                md_bg_color: app.theme_cls.surfaceColor
+                radius: 0
+                elevation: 1
+                padding: "8dp"
+                
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    spacing: "24dp"
+                    
+                    # App Logo/Title
+                    MDBoxLayout:
+                        adaptive_height: True
+                        padding: "24dp"
+                        orientation: 'vertical'
+                        spacing: "16dp"
+                        
+                        MDLabel:
+                            text: "S3 File Manager"
+                            font_style: "Title"
+                            role: "large"
+                            halign: "center"
+                            theme_text_color: "Custom"
+                            text_color: app.theme_cls.primaryColor
+                            padding: "0dp", "12dp"
+                            
+                        MDLabel:
+                            text: root.current_user_name
+                            font_style: "Body"
+                            role: "medium"
+                            padding: "0dp", "8dp"
+                            halign: "center"
+                            padding: "0dp", "8dp"
+                            theme_text_color: "Secondary"
+                    
+                    MDDivider:
+                    
+                    # Navigation Menu - using standard MDButtons
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        spacing: "8dp"
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: "8dp", "16dp"
+                        
+                        MDLabel:
+                            text: "Navigation"
+                            font_style: "Body"
+                            role: "small"
+                            halign: "left"
+                            adaptive_height: True
+                            bold: True
+                        
+                        # Dashboard Button (same style as logout button)
+                        MDButton:
+                            style: "filled"
+                            size_hint_x: 1
+                            size_hint_y: None
+                            height: "48dp"
+                            md_bg_color: app.theme_cls.primaryColor if root.current_tab == "dashboard" else [0.9, 0.9, 0.9, 1]
+                            on_release: root.show_tab("dashboard")
+                            
+                            MDButtonIcon:
+                                icon: "view-dashboard"
+                            
+                            MDButtonText:
+                                text: "Dashboard"
+                        
+                        # Users Button
+                        MDButton:
+                            style: "filled"
+                            size_hint_x: 1
+                            size_hint_y: None
+                            height: "48dp"
+                            md_bg_color: app.theme_cls.primaryColor if root.current_tab == "users" else [0.9, 0.9, 0.9, 1]
+                            on_release: root.show_tab("users")
+                            
+                            MDButtonIcon:
+                                icon: "account-group"
+                            
+                            MDButtonText:
+                                text: "Users"
+                        
+                        # Storage Button
+                        MDButton:
+                            style: "filled"
+                            size_hint_x: 1
+                            size_hint_y: None
+                            height: "48dp"
+                            md_bg_color: app.theme_cls.primaryColor if root.current_tab == "storage" else [0.9, 0.9, 0.9, 1]
+                            on_release: root.show_tab("storage")
+                            
+                            MDButtonIcon:
+                                icon: "folder"
+                            
+                            MDButtonText:
+                                text: "Storage"
+                        
+                        # Logs Button
+                        MDButton:
+                            style: "filled"
+                            size_hint_x: 1
+                            size_hint_y: None
+                            height: "48dp"
+                            md_bg_color: app.theme_cls.primaryColor if root.current_tab == "logs" else [0.9, 0.9, 0.9, 1]
+                            on_release: root.show_tab("logs")
+                            
+                            MDButtonIcon:
+                                icon: "text-box-multiple"
+                            
+                            MDButtonText:
+                                text: "Logs"
+                    
+                    MDWidget:
+                        # Spacer
+                    
+                    # Logout Button at Bottom
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: "64dp"
+                        padding: "8dp"
+                        
+                        MDButton:
+                            id: logout_button
+                            style: "filled"
+                            theme_bg_color: "Custom"
+                            md_bg_color: app.theme_cls.errorColor
+                            on_release: root.on_logout_button_press()
+                            size_hint: 1, 1
+                            
+                            MDButtonIcon:
+                                icon: "logout"
+                                theme_text_color: "Custom"
+                                text_color: [1, 1, 1, 1]
+                            
+                            MDButtonText:
+                                text: "Logout"
+                                theme_text_color: "Custom"
+                                text_color: [1, 1, 1, 1]
+
+            # Main Content Area
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.75
+                md_bg_color: app.theme_cls.backgroundColor
+                
+                # Top Bar with refresh button
+                MDTopAppBar:
+                    title: ""
+                    elevation: 0
+                    size_hint_y: None
+                    height: "56dp"
+                    md_bg_color: app.theme_cls.backgroundColor
+                    specific_text_color: app.theme_cls.onSurfaceColor
+                    right_action_items: [["refresh", lambda x: root.refresh_data()]]
+                
+                # Content Screens
+                ScreenManager:
+                    id: tab_manager
+                    
+                    # Dashboard Screen
+                    MDScreen:
+                        id: dashboard_screen
+                        name: "dashboard"
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            padding: "24dp"
+                            spacing: "24dp"
+                            
+                            MDLabel:
+                                text: "Dashboard Overview"
+                                font_style: "Headline"
+                                role: "small"
+                                adaptive_height: True
+                                halign: "left"
+                            
+                            # Stats Cards Row
+                            MDGridLayout:
+                                cols: 2
+                                spacing: "16dp"
+                                size_hint_y: None
+                                height: "150dp"
+                                
+                                # Storage Stats Card
+                                MDCard:
+                                    orientation: 'vertical'
+                                    padding: "16dp"
+                                    spacing: "8dp"
+                                    style: "elevated"
+                                    radius: "12dp"
+                                    
+                                    MDBoxLayout:
+                                        orientation: 'horizontal'
+                                        adaptive_height: True
+                                        
+                                        MDIcon:
+                                            icon: "database"
+                                            theme_text_color: "Custom"
+                                            text_color: app.theme_cls.primaryColor
+                                            size_hint_x: None
+                                            width: "32dp"
+                                        
+                                        MDLabel:
+                                            text: "Storage Usage"
+                                            font_style: "Title"
+                                            role: "small"
+                                            bold: True
+                                    
+                                    MDLabel:
+                                        id: storage_label
+                                        text: "0 GB / 50 GB"
+                                        font_style: "Body"
+                                        role: "large"
+                                    
+                                    MDBoxLayout:
+                                        orientation: 'vertical'
+                                        spacing: "4dp"
+                                        
+                                        MDLabel:
+                                            text: "5% used"
+                                            font_style: "Body"
+                                            role: "small"
+                                            theme_text_color: "Secondary"
+                                            adaptive_height: True
+                                        
+                                        MDLinearProgressIndicator:
+                                            id: storage_progress
+                                            value: 5
+                                            height: "6dp"
+                                            color: app.theme_cls.primaryColor
+                                
+                                # User Stats Card
+                                MDCard:
+                                    orientation: 'vertical'
+                                    padding: "16dp"
+                                    spacing: "8dp"
+                                    style: "elevated"
+                                    radius: "12dp"
+                                    
+                                    MDBoxLayout:
+                                        orientation: 'horizontal'
+                                        adaptive_height: True
+                                        
+                                        MDIcon:
+                                            icon: "account-group"
+                                            theme_text_color: "Custom"
+                                            text_color: app.theme_cls.primaryColor
+                                            size_hint_x: None
+                                            width: "32dp"
+                                        
+                                        MDLabel:
+                                            text: "User Management"
+                                            font_style: "Title"
+                                            role: "small"
+                                            bold: True
+                                    
+                                    MDLabel:
+                                        id: user_count_label
+                                        text: "Total Users: 0"
+                                        font_style: "Body"
+                                        role: "large"
+                                    
+                                    MDButton:
+                                        style: "tonal"
+                                        size_hint_x: 0.8
+                                        pos_hint: {"right": 1}
+                                        on_release: root.show_tab('users')
+                                        
+                                        MDButtonText:
+                                            text: "Manage Users"
+                            
+                            # Quick Actions Card
+                            MDCard:
+                                orientation: 'vertical'
+                                padding: "16dp"
+                                spacing: "8dp"
+                                style: "elevated"
+                                radius: "12dp"
+                                
+                                MDBoxLayout:
+                                    orientation: 'horizontal'
+                                    adaptive_height: True
+                                    
+                                    MDIcon:
+                                        icon: "lightning-bolt"
+                                        theme_text_color: "Custom"
+                                        text_color: app.theme_cls.primaryColor
+                                        size_hint_x: None
+                                        width: "32dp"
+                                    
+                                    MDLabel:
+                                        text: "Quick Actions"
+                                        font_style: "Title"
+                                        role: "small"
+                                        bold: True
+                                
+                                MDGridLayout:
+                                    cols: 2
+                                    spacing: "16dp"
+                                    padding: "8dp"
+                                    size_hint_y: None
+                                    height: "64dp"
+                                    
+                                    MDButton:
+                                        style: "filled"
+                                        on_release: root.show_add_user_dialog()
+                                        
+                                        MDButtonIcon:
+                                            icon: "account-plus"
+                                        
+                                        MDButtonText:
+                                            text: "Add User"
+                                    
+                                    MDButton:
+                                        style: "filled"
+                                        on_release: root.show_create_folder_dialog()
+                                        
+                                        MDButtonIcon:
+                                            icon: "folder-plus"
+                                        
+                                        MDButtonText:
+                                            text: "Create Folder"
+                    
+                    # Users Screen
+                    MDScreen:
+                        id: users_screen
+                        name: "users"
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            padding: "24dp"
+                            spacing: "16dp"
+                            
+                            # Header with action button
+                            MDBoxLayout:
+                                adaptive_height: True
+                                spacing: "8dp"
+                                
+                                MDLabel:
+                                    text: "User Management"
+                                    font_style: "Headline"
+                                    role: "small"
+                                    adaptive_height: True
+                                
+                                MDWidget:
+                                
+                                MDButton:
+                                    style: "filled"
+                                    on_release: root.show_add_user_dialog()
+                                    size_hint: None, None
+                                    size: "120dp", "48dp"
+                                    
+                                    MDButtonIcon:
+                                        icon: "account-plus"
+                                    
+                                    MDButtonText:
+                                        text: "Add User"
+                            
+                            # Info text
+                            MDLabel:
+                                text: "Total Users: 0"
+                                font_style: "Body"
+                                role: "medium"
+                                adaptive_height: True
+                                
+                            # User List
+                            MDCard:
+                                style: "elevated"
+                                padding: "8dp"
+                                radius: "12dp"
+                                
+                                MDScrollView:
+                                    do_scroll_x: False
+                                    
+                                    MDList:
+                                        id: users_list
+                                        padding: 0
+                    
+                    # Storage Screen
+                    MDScreen:
+                        id: storage_screen
+                        name: "storage"
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            padding: "24dp"
+                            spacing: "16dp"
+                            
+                            # Header with action button
+                            MDBoxLayout:
+                                adaptive_height: True
+                                spacing: "8dp"
+                                
+                                MDLabel:
+                                    text: "Folder Management"
+                                    font_style: "Headline"
+                                    role: "small"
+                                    adaptive_height: True
+                                
+                                MDWidget:
+                                
+                                MDButton:
+                                    style: "filled"
+                                    on_release: root.show_create_folder_dialog()
+                                    size_hint: None, None
+                                    size: "150dp", "48dp"
+                                    
+                                    MDButtonIcon:
+                                        icon: "folder-plus"
+                                    
+                                    MDButtonText:
+                                        text: "New Folder"
+                            
+                            # Folder List Card
+                            MDCard:
+                                style: "elevated"
+                                padding: "8dp"
+                                radius: "12dp"
+                                
+                                MDScrollView:
+                                    do_scroll_x: False
+                                    
+                                    MDList:
+                                        id: folders_list
+                                        padding: 0
+                    
+                    # Logs Screen
+                    MDScreen:
+                        id: logs_screen
+                        name: "logs"
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            padding: "24dp"
+                            spacing: "16dp"
+                            
+                            MDLabel:
+                                text: "System Logs"
+                                font_style: "Headline"
+                                role: "small"
+                                adaptive_height: True
+                            
+                            # Logs List Card
+                            MDCard:
+                                style: "elevated"
+                                padding: "8dp"
+                                radius: "12dp"
+                                
+                                MDScrollView:
+                                    do_scroll_x: False
+                                    
+                                    MDList:
+                                        id: logs_list
+                                        padding: 0

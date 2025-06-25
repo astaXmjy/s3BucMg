@@ -1,0 +1,35 @@
+[
+  {
+    "username": "admin",
+    "email": "admin@example.com",
+    "role": "admin",
+    "access_level": "both",
+    "folder_access": [
+      "/",
+      "/public/",
+      "/shared/",
+      "/users/"
+    ],
+    "status": "active"
+  },
+  {
+    "username": "user1",
+    "email": "user1@example.com",
+    "role": "user",
+    "access_level": "pull",
+    "folder_access": [
+      "/users/user1/"
+    ],
+    "status": "active"
+  },
+  {
+    "username": "user2",
+    "email": "user2@example.com",
+    "role": "user",
+    "access_level": "push",
+    "folder_access": [
+      "/users/user2/"
+    ],
+    "status": "active"
+  }
+]

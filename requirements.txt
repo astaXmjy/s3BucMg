@@ -1,0 +1,22 @@
+# Core dependencies
+# kivy
+boto3
+python-dotenv
+passlib
+pyjwt
+bcrypt
+matplotlib
+# Development dependencies
+black
+pytest
+pytest-cov
+flake8
+mypy
+
+# Additional utilities
+pillow
+requests
+
+# git clone https://github.com/kivymd/KivyMD.git --depth 1
+# cd KivyMD
+# pip install .
