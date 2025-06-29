@@ -82,7 +82,7 @@ class AWSConfig:
        try:
            s3_client = boto3.client('s3', **cls.get_aws_config())
            s3_client.list_buckets()
-           logging.info("S3 connection successful")
+           logging.info("S3 connection successful and asta you are op")
 
            dynamodb_client = boto3.client('dynamodb', **cls.get_aws_config()) 
            dynamodb_client.list_tables()
